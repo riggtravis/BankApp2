@@ -21,7 +21,7 @@ public class AccountTest {
 	@Test
 	public void testSetAccountid() {
 		testAccount.setStatus(1);
-		assertEquals(1, testAccount.getAccountid());
+		assertEquals(1, testAccount.getStatus());
 	}
 
 	@Test
@@ -43,7 +43,7 @@ public class AccountTest {
 	@Test
 	public void testSetStatus() {
 		testAccount.setStatus(1);
-		assertEquals(0, testAccount.getStatus());
+		assertEquals(1, testAccount.getStatus());
 	}
 
 	@Test
