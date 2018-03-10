@@ -11,13 +11,13 @@ import utlities.ConnectionFactory;
 
 public class BankAccountDAO {
   final static Logger logger = Logger.getLogger(ConnectionFactory.class);
-  
+
   // Create
   public void createBankAccount(BankAccount account) {
     String sql = "INSERT INTO ACCOUNT (BALANCE, STATUS, ACCOUNTTYPE) VALUES (?, ?, ?)";
-    
+
     Connection conn = ConnectionFactory.getInstance().getConnection();
-    
+
     try {
       conn.setAutoCommit(false);
       PreparedStatement ps = conn.prepareStatement(sql);
@@ -29,9 +29,9 @@ public class BankAccountDAO {
       logger.fatal(e);
     }
   }
-  
+
   // Read
-  public BankAccount readBankAccount() {
+  public BankAccount readBankAccount(int bankAccountid) {
     return new BankAccount();
   }
 
