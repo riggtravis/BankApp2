@@ -7,10 +7,15 @@ public class BankAccount {
 	private int bankAccountType;
 
 	public BankAccount () {
-		this.bankAccountid    = 0;
-		this.balance          = 0;
-		this.status           = 0;
-		this.bankAccountType  = 0;
+		this(0, 0.0D, 0, 0);
+	}
+
+	public BankAccount (
+			int startId, double startBalanace, int startStatus, int startType) {
+		this.bankAccountid 		= startId;
+		this.balance 					= startBalanace;
+		this.status 					= startStatus;
+		this.bankAccountType	= startType;
 	}
 
 	public int getBankAccountid() {
