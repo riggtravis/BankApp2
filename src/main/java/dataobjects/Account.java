@@ -46,6 +46,8 @@ public class Account {
 	}
 
 	public void makeDeposit(double deposit) {
+		// Make sure the user doesn't try to make a negative deposit
+		if (deposit < 0) throw BadDepositException;
 		this.balance += deposit;
 	}
 
