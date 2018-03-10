@@ -57,4 +57,10 @@ public class AccountTest {
 		assertEquals(1, testAccount.getAccounttype());
 	}
 
+	@Test
+	public void testMakeDeposit() {
+		testAccount.makeDeposit(0.1D);
+		assertEquals((Double) 0.1D, (Double) testAccount.getBalance());
+	}
+
 }

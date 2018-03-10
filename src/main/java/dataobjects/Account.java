@@ -44,4 +44,9 @@ public class Account {
 	public void setAccounttype(int accounttype) {
 		this.accounttype = accounttype;
 	}
+
+	public void makeDeposit(double deposit) {
+		this.balance += deposit;
+	}
+
 }
