@@ -45,15 +45,19 @@ public class Account {
 		this.accounttype = accounttype;
 	}
 
-	public void makeDeposit(double deposit) throws BadDepositException {
+	public void makeDeposit(double deposit) throws BadTransactionException {
 		// Make sure the user doesn't try to make a negative deposit
 		if (deposit < 0) {
-			throw new BadDepositException();
+			throw new BadTransactionException();
 		}
 		this.balance += deposit;
 	}
 
-	public void makeWithdrawal(double withdrawal) {
+	public void makeWithdrawal(double withdrawal) throws BadTransactionException {
+	  // Make sure the user doesn't try to make a negative withdrawal
+	  if (withdrawal < 0) {
+	    throw new BadTransactionException();
+	  }
 		this.balance -= withdrawal;
 	}
 
