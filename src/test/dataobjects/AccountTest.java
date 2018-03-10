@@ -62,4 +62,11 @@ public class AccountTest {
 		assertEquals((Double) 0.1D, (Double) testAccount.getBalance());
 	}
 
+	@Test
+	public void testMakeWithdrawal() {
+		testAccount.makeDeposit(1.0D);
+		testAccount.makeWithdrawal(0.1D);
+		assertEquals((Double) 0.9D, (Double) testAccount.getBalance());
+	}
+
 }
