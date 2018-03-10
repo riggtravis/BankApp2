@@ -35,6 +35,7 @@ public class ConnectionFactory {
           prop.getProperty("usr"),
           prop.getProperty("psw")
         );
+      conn.setAutoCommit(false);
     } catch (FileNotFoundException e) {
       // This really shouldn't happen. We preconfigured the database settings
       logger.fatal("Database properties cold not be loaded", e);
