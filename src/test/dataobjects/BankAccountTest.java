@@ -7,20 +7,20 @@ import org.junit.Rule;
 
 import static org.junit.Assert.*;
 
-public class AccountTest {
-	Account testAccount;
+public class BankAccountTest {
+	BankAccount testAccount;
 	
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
 	@Before
 	public void beforeEach () {
-		testAccount = new Account();
+		testAccount = new BankAccount();
 	}
 
 	@Test
-	public void testGetAccounid() {
-		assertEquals(0, testAccount.getAccountid());
+	public void testGetBankAccounid() {
+		assertEquals(0, testAccount.getBankAccountid());
 	}
 
 	@Test
@@ -66,26 +66,33 @@ public class AccountTest {
 	public void testMakeDeposit() {
 		try {
 			testAccount.makeDeposit(0.1D);
-		} catch (BadDepositException e) {
+		} catch (BadTransactionException e) {
 			fail("Deposit treated as bad");
 		}
 		assertEquals((Double) 0.1D, (Double) testAccount.getBalance());
 	}
 	
-	@Test(expected = BadDepositException.class)
-	public void testBadDeposit() throws BadDepositException {
+	@Test(expected = BadTransactionException.class)
+	public void testBadDeposit() throws BadTransactionException {
 		testAccount.makeDeposit(-0.1D);
+		thrown.expect(BadTransactionException.class);
 	}
 
 	@Test
 	public void testMakeWithdrawal() {
 		try {
 			testAccount.makeDeposit(1.0D);
-		} catch (BadDepositException e) {
-			fail("Deposit before withdrawal treated as bad");
+      testAccount.makeWithdrawal(0.1D);
+		} catch (BadTransactionException e) {
+			fail("Either the deposit or the withdrawal was bad");
 		}
-		testAccount.makeWithdrawal(0.1D);
 		assertEquals((Double) 0.9D, (Double) testAccount.getBalance());
+	}
+	
+	@Test(expected = BadTransactionException.class)
+	public void testBadWithdrawal() throws BadTransactionException {
+	  testAccount.makeDeposit(-0.1D);
+		thrown.expect(BadTransactionException.class);
 	}
 
 }

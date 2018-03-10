@@ -1,24 +1,24 @@
 package dataobjects;
 
-public class Account {
-	private int accountid;
+public class BankAccount {
+	private int bankAccountid;
 	private double balance;
 	private int status;
-	private int accounttype;
+	private int bankAccountType;
 
-	public Account () {
-		this.accountid		= 0;
-		this.balance			= 0;
-		this.status 			= 0;
-		this.accounttype	= 0;
+	public BankAccount () {
+		this.bankAccountid    = 0;
+		this.balance          = 0;
+		this.status           = 0;
+		this.bankAccountType  = 0;
 	}
 
-	public int getAccountid() {
-		return accountid;
+	public int getBankAccountid() {
+		return bankAccountid;
 	}
 
-	public void setAccountid(int accountid) {
-		this.accountid = accountid;
+	public void setBankAccountid(int accountid) {
+		this.bankAccountid = accountid;
 	}
 
 	public double getBalance() {
@@ -38,11 +38,11 @@ public class Account {
 	}
 
 	public int getAccounttype() {
-		return accounttype;
+		return bankAccountType;
 	}
 
 	public void setAccounttype(int accounttype) {
-		this.accounttype = accounttype;
+		this.bankAccountType = accounttype;
 	}
 
 	public void makeDeposit(double deposit) throws BadTransactionException {
