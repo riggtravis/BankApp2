@@ -1,12 +1,17 @@
 package dataobjects;
 
+import org.junit.rules.ExpectedException;
 import org.junit.Test;
 import org.junit.Before;
+import org.junit.Rule;
 
 import static org.junit.Assert.*;
 
 public class AccountTest {
 	Account testAccount;
+	
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
 
 	@Before
 	public void beforeEach () {
@@ -59,13 +64,26 @@ public class AccountTest {
 
 	@Test
 	public void testMakeDeposit() {
-		testAccount.makeDeposit(0.1D);
+		try {
+			testAccount.makeDeposit(0.1D);
+		} catch (BadDepositException e) {
+			fail("Deposit treated as bad");
+		}
 		assertEquals((Double) 0.1D, (Double) testAccount.getBalance());
+	}
+	
+	@Test(expected = BadDepositException.class)
+	public void testBadDeposit() throws BadDepositException {
+		testAccount.makeDeposit(-0.1D);
 	}
 
 	@Test
 	public void testMakeWithdrawal() {
-		testAccount.makeDeposit(1.0D);
+		try {
+			testAccount.makeDeposit(1.0D);
+		} catch (BadDepositException e) {
+			fail("Deposit before withdrawal treated as bad");
+		}
 		testAccount.makeWithdrawal(0.1D);
 		assertEquals((Double) 0.9D, (Double) testAccount.getBalance());
 	}
