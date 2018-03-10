@@ -49,4 +49,8 @@ public class Account {
 		this.balance += deposit;
 	}
 
+	public void makeWithdrawal(double withdrawal) {
+		this.balance -= withdrawal;
+	}
+
 }
