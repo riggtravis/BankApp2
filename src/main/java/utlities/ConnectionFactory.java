@@ -23,12 +23,16 @@ public class ConnectionFactory {
     return cf;
   }
   
-  public Connection getConnection() {
+  public Connection getConnection(boolean production) {
     Connection conn = null;
     Properties prop = new Properties();
     
     try {
-      prop.load(new FileReader("src/main/resources/database.properties"));
+      if (production) {
+        prop.load(new FileReader("src/main/resources/database.properties"));
+      } else {
+        prop.load(new FileReader("src/test/resources/database.properties"));
+      }
       Class.forName(prop.getProperty("driver"));
       conn = DriverManager.getConnection(
           prop.getProperty("url"),
