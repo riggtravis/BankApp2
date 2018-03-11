@@ -10,55 +10,17 @@ import java.sql.Savepoint;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import dataobjects.BankAccount;
 import utlities.ConnectionFactory;
 
 public class BankAccountDAOTest {
-  private final boolean PRODUCTION_VALUE = false;
-  private final Connection conn =
-      ConnectionFactory.getInstance().getConnection(PRODUCTION_VALUE);
+  private Connection conn;
   private Savepoint s;
   private BankAccount testAccount;
-  final static Logger logger = Logger.getLogger(ConnectionFactory.class);
+  final static Logger logger = Logger.getLogger(BankAccountDAOTest.class);
   private BankAccountDAO dao;
-  
-  @Before
-  public void setUp() {
-    String sql = "DELETE FROM BANK_ACCOUNT";
-    StringBuilder sqlBuilder = new StringBuilder();
-    sqlBuilder.append("INSERT INTO BANK_ACCOUNT");
-    sqlBuilder.append("(BANK_ACCOUNTID, BALANCE, STATUS, ACCOUNTTYPE)");
-    sqlBuilder.append("VALUES (?, ?, ?, ?)");
-    testAccount = new BankAccount(2, 2.0, 2, 2);
-    try {
-      PreparedStatement ps = conn.prepareStatement(sql);
-      ps.executeUpdate();
-      sql = sqlBuilder.toString();
-      ps = conn.prepareStatement(sql);
-      ps.setInt(1, 1);
-      ps.setDouble(2, 1.0D);
-      ps.setInt(3, 1);
-      ps.setInt(4, 1);
-      ps.executeUpdate();
-      s = conn.setSavepoint("testSavepoint");
-    } catch (SQLException e) {
-      // An exception during the set up for unit tests is considered "bad"
-      logger.fatal(e);
-    }
-  }
-
-  @After
-  public void tearDown() {
-    try {
-      conn.rollback(s);
-    } catch (SQLException e) {
-      // This should also be put into the category of "bad"
-      logger.fatal(e);
-    }
-  }
   
   @Test
   public void testReadAccount() {
@@ -91,16 +53,25 @@ public class BankAccountDAOTest {
   @Test
   public void testCreateBankAccountAndReadBankAccount() {
     dao = new BankAccountDAO();
+    testAccount = new BankAccount(2, 2.0D, 2, 2);
     logger.info("Inserted " + dao.createBankAccount(testAccount) + " acccounts");
-    BankAccount checkAccount = dao.readBankAccount(1);
+    BankAccount checkAccount = dao.readBankAccount(2);
     assertEquals((Double) testAccount.getBalance(), (Double) checkAccount.getBalance());
   }
   
   @Test
   public void testUpdateBankAccountAndReadBankAccount() {
     dao = new BankAccountDAO();
-    dao.updateBankAccount(new BankAccount(1, 2.0D, 2, 2));
-    assertEquals((Double) 2.0D, (Double) dao.readBankAccount(1).getBalance());
+    dao.updateBankAccount(new BankAccount(3, 2.0D, 2, 2));
+    assertEquals((Double) 2.0D, (Double) dao.readBankAccount(3).getBalance());
+  }
+  
+  @Test
+  public void testCreateAndDelete() {
+    dao = new BankAccountDAO();
+    dao.createBankAccount(new BankAccount(4, 4.0D, 4, 4));
+    dao.deleteAccount(4);
+    assertEquals(0, dao.readBankAccount(4).getBankAccountid());
   }
 
 }

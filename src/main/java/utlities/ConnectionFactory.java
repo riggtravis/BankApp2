@@ -23,23 +23,20 @@ public class ConnectionFactory {
     return cf;
   }
   
-  public Connection getConnection(boolean production) {
+  public Connection getConnection() {
     Connection conn = null;
     Properties prop = new Properties();
     
     try {
-      if (production) {
-        prop.load(new FileReader("src/main/resources/database.properties"));
-      } else {
-        prop.load(new FileReader("src/test/resources/database.properties"));
-      }
+      prop.load(new FileReader("src/main/resources/database.properties"));
       Class.forName(prop.getProperty("driver"));
       conn = DriverManager.getConnection(
           prop.getProperty("url"),
           prop.getProperty("usr"),
           prop.getProperty("psw")
         );
-      conn.setAutoCommit(false);
+      conn.setAutoCommit(true);
+      logger.debug("Got connection!");
     } catch (FileNotFoundException e) {
       // This really shouldn't happen. We preconfigured the database settings
       logger.fatal("Database properties cold not be loaded", e);
