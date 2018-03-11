@@ -4,7 +4,9 @@
   <artifactId>bankingappII2</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>BankingApplicationII2</name>
-  <description>This is a new banking app, better and less bad than the previous one</description>
+  <description>
+    This is a new banking app, better and less bad than the previous one
+ </description>
   <dependencies>
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
