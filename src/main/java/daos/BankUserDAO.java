@@ -18,50 +18,65 @@ public class BankUserDAO {
 
   /**
    * Create
+   * @throws SQLException 
    */
-  public int createBankUser(BankUser user) {
+  public int createBankUser(BankUser user) throws SQLException {
     sql = "INSERT INTO BANK_USER"
         + " (BANK_USERID, USERNAME, USER_PASSWORD, USER_TYPE)"
         + " VALUES (?, ?, ?, ?)";
     conn = ConnectionFactory.getInstance().getConnection();
-    try {
-      ps = conn.prepareStatement(sql);
-      ps.setInt(1, user.getBankUserID());
-      ps.setString(2, user.getUsername());
-      ps.setString(3, user.getPassword());
-      ps.setInt(4, user.getUserType());
-      return ps.executeUpdate();
-    } catch (SQLException e) {
-      logger.fatal(e);
-      return 0;
-    }
+    ps = conn.prepareStatement(sql);
+    ps.setInt(1, user.getBankUserID());
+    ps.setString(2, user.getUsername());
+    ps.setString(3, user.getPassword());
+    ps.setInt(4, user.getUserType());
+    return ps.executeUpdate();
   }
 
   /**
-   * Read
+   * +-+-+-+-+
+   * |R|e|a|d|
+   * +-+-+-+-+
    */
-  public BankUser readBankUser(int userID) {
+  public BankUser readBankUser(int userID) throws SQLException {
     BankUser returnUser = new BankUser();
     
     conn = ConnectionFactory.getInstance().getConnection();
     sql = "SELECT * FROM BANK_USER WHERE BANK_USERID = ?";
-    try {
-      ps = conn.prepareStatement(sql);
-      ps.setInt(1, userID);
-      ResultSet rs = ps.executeQuery();
-      if (rs.next()) {
-        logger.info("Got a user");
-        returnUser.setBankUserID(rs.getInt("bank_userID"));
-        returnUser.setPassword(rs.getString("user_password"));
-        returnUser.setUsername(rs.getString("username"));
-        returnUser.setUserType(rs.getInt("user_type"));
-      } else {
-        logger.info("Found no records matching " + userID);
-      }
-    } catch (SQLException e) {
-      logger.fatal(e);
-    }
+    ps = conn.prepareStatement(sql);
+    ps.setInt(1, userID);
+    ResultSet rs = ps.executeQuery();
+    populateBankUser(rs, returnUser);
     return returnUser;
+  }
+  
+  /**
+   * Read by username
+   */
+  public BankUser readBankUserByUserName(String userName) throws SQLException {
+    BankUser returnUser = new BankUser();
+    
+    conn = ConnectionFactory.getInstance().getConnection();
+    sql = "SELECT * FROM BANK_USER WHERE BANK_USERID = ?";
+    ps = conn.prepareStatement(sql);
+    ps.setString(1, userName);
+    ResultSet rs = ps.executeQuery();
+    
+    // Set up the user from the ResultSet
+    populateBankUser(rs, returnUser);
+    return returnUser;
+  }
+  
+  // Set up a user from a result set
+  private BankUser populateBankUser(ResultSet rs, BankUser popUser) throws SQLException {
+    if (rs.next()) {
+      logger.info("Got a user");
+      popUser.setBankUserID(rs.getInt("bank_userID"));
+      popUser.setPassword(rs.getString("user_password"));
+      popUser.setUsername(rs.getString("username"));
+      popUser.setUserType(rs.getInt("user_type"));
+    }
+    return popUser;
   }
 
   /**
@@ -90,7 +105,7 @@ public class BankUserDAO {
    */
   public void deleteUser(int i) {
     conn = ConnectionFactory.getInstance().getConnection();
-    sql = "DELETE FROM BANK_USERS WHERE BANK_ACCOUNTID = ?";
+    sql = "DELETE FROM BANK_USER WHERE BANK_USERID = ?";
     try {
       ps = conn.prepareStatement(sql);
       ps.setInt(1, i);

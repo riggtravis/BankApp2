@@ -8,7 +8,9 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import dataobjects.BankUser;
 import utlities.ConnectionFactory;
@@ -16,6 +18,9 @@ import utlities.ConnectionFactory;
 public class BankUserDAOTest {
   private BankUserDAO dao;
   final static Logger logger = Logger.getLogger(BankUserDAOTest.class);
+  
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
   
   @Before
   public void setUp() {
@@ -32,28 +37,57 @@ public class BankUserDAOTest {
   
   @Test
   public void testRead() {
-    assertEquals(1, dao.readBankUser(1).getUserType());
+    try {
+      assertEquals(1, dao.readBankUser(1).getUserType());
+    } catch (SQLException e) {
+      fail("SQLException");
+    }
   }
 
   @Test
   public void testCreateBankUser() {
-    BankUser testUser = new BankUser(2, "usr", "psw", 2);
-    dao.createBankUser(testUser);
-    assertEquals("usr", dao.readBankUser(2).getUsername());
+    BankUser testUser = new BankUser(2, "NewUsr", "psw", 2);
+    try {
+      dao.createBankUser(testUser);
+    } catch (SQLException e) {
+      fail("SQLException");
+    }
+    try {
+      assertEquals("NewUsr", dao.readBankUser(2).getUsername());
+    } catch (SQLException e) {
+      fail("SQLException");
+    }
+  }
+  
+  @Test(expected = SQLException.class)
+  public void testCreateBankUserBad() throws SQLException {
+    dao.createBankUser(new BankUser(3, "usr", "psw", 1));
   }
   
   @Test
   public void testUpdateBankUser() {
     BankUser testUser = new BankUser(3, "newUsername", "newPassword", 0);
     dao.updateBankUser(testUser);
-    assertEquals("newUsername", dao.readBankUser(3).getUsername());
+    try {
+      assertEquals("newUsername", dao.readBankUser(3).getUsername());
+    } catch (SQLException e) {
+      fail("SQLException");
+    }
   }
   
   @Test
   public void testDelete() {
-    dao.createBankUser(new BankUser(4, "deleteMe", "password", 4));
+    try {
+      dao.createBankUser(new BankUser(4, "deleteMe", "password", 4));
+    } catch (SQLException e) {
+      fail("SQLException");
+    }
     dao.deleteUser(4);
-    assertEquals(0, dao.readBankUser(4).getBankUserID());
+    try {
+      assertEquals(0, dao.readBankUser(4).getBankUserID());
+    } catch (SQLException e) {
+      fail("SQLException");
+    }
   }
 
 }
