@@ -7,6 +7,11 @@ import static org.junit.Assert.*;
  */
 package dataobjects;
 
+import static org.junit.Assert.assertEquals;
+
+import org.junit.Before;
+import org.junit.Test;
+
 /**
  * @author Travis Rigg
  *
@@ -14,14 +19,14 @@ package dataobjects;
 public class BankUserTest {
   private BankUser testUser;
 
-  @BeforeEach
+  @Before
   public void setUp () {
     testUser = new BankUser(0, "usr", "psw", 0);
   }
 
   @Test
   public void testGetBankUserID () {
-    assertEquals(0, testUser.getBankUserID());
+    assertEquals((Integer) 0, (Integer) testUser.getBankUserID());
   }
 
   @Test
@@ -49,7 +54,7 @@ public class BankUserTest {
   @Test
   public void testSetPassword () {
     testUser.setPassword("newPassword");
-    assertEquals("newPassword", testUser.getUsername());
+    assertEquals("newPassword", testUser.getPassword());
   }
 
   @Test
