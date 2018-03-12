@@ -6,6 +6,21 @@ public class BankUser {
   private String userPassword;
   private int userType;
 
+  public BankUser () {
+    this(0, "", "", 0);
+  }
+
+  public BankUser (
+      int initialId,
+      String initialUsername,
+      String initialPassword,
+      int initialType) {
+    this.bankUserID = initialId;
+    this.userPassword = initialPassword;
+    this.username = initialUsername;
+    this.userType = initialType;
+  }
+
   public int getBankUserID () {
     return this.bankUserID;
   }
