@@ -22,22 +22,35 @@ public class BankAccountDAOTest {
   final static Logger logger = Logger.getLogger(BankAccountDAOTest.class);
   private BankAccountDAO dao;
   
+  @Before
+  public void setUp() {
+    conn = ConnectionFactory.getInstance().getConnection();
+    try {
+      PreparedStatement ps = conn.prepareStatement(
+          "DELETE FROM BANK_ACCOUNT WHERE BANK_ACCOUNTID = 2)");
+      ps.executeQuery();
+    } catch (SQLException e) {
+      logger.fatal(e);
+    }
+  }
+
   @Test
   public void testReadAccount() {
     assertEquals(1, new BankAccountDAO().readBankAccount(1).getAccounttype());
   }
 
   /**
-   * This test currently only passes on an entirely new database. The possible solutions to
-   * this problem that I have come up with include the following:
+   * This test currently only passes on an entirely new database. The possible
+   * solutions to this problem that I have come up with include the following:
    *  Using the before class method(s) to create a completely clean database
    *      PRO: Gauruntees that this test will be run correctly
    *      CON: Clears out any data that we might have actually been using
-   *  Creating a special database for the tests to interact with and cleaning it out in the
-   *    before class methods
+   *  Creating a special database for the tests to interact with and cleaning
+   *  it out in the before class methods
    *      PRO: Gauruntees that this test will be run correctly
    *      CON: Setting up databases is *hard*
-   *  Using other functions that will be created later on to back test this functionality
+   *  Using other functions that will be created later on to back test this
+   *  functionality
    *      PRO: Requires no immediate action
    *        Will work (eventually)
    *      CON: Is not unit testing
@@ -54,9 +67,11 @@ public class BankAccountDAOTest {
   public void testCreateBankAccountAndReadBankAccount() {
     dao = new BankAccountDAO();
     testAccount = new BankAccount(2, 2.0D, 2, 2);
-    logger.info("Inserted " + dao.createBankAccount(testAccount) + " acccounts");
+    logger.info(
+        "Inserted " + dao.createBankAccount(testAccount) + " acccounts");
     BankAccount checkAccount = dao.readBankAccount(2);
-    assertEquals((Double) testAccount.getBalance(), (Double) checkAccount.getBalance());
+    assertEquals(
+        (Double) testAccount.getBalance(), (Double) checkAccount.getBalance());
   }
   
   @Test

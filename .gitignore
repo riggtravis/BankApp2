@@ -1,3 +1,4 @@
 /target/
 *.class
 bank_log.html
+database.properties
