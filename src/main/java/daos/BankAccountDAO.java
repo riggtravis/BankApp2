@@ -15,13 +15,13 @@ public class BankAccountDAO {
   private String sql;
   private Connection conn;
   private PreparedStatement ps;
-  
+
   /**
    * Create Bank Account Function
    * @param BankAccount account
    *  This is the account that needs to be inserted into the database
-   * @return an integer representing the number of rows that have been inserted (should
-   * be 1)
+   * @return an integer representing the number of rows that have been inserted
+   *  (should be 1)
    */
   public int createBankAccount(BankAccount account) {
     sql = "INSERT INTO BANK_ACCOUNT"
@@ -69,7 +69,7 @@ public class BankAccountDAO {
     }
     return returnAccount;
   }
-  
+
   /**
    * Update function
    * @param an account (with a valid id) to be updated
