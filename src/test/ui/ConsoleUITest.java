@@ -1,21 +1,19 @@
 package ui;
 
-import static org.junit.Assert.*;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.util.Scanner;
-
-import org.apache.log4j.Logger;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+import com.sun.corba.se.spi.orbutil.fsm.TestAction1;
 import daos.BankAccountDAO;
 import daos.BankUserDAO;
 import dataobjects.BankAccount;
 import dataobjects.BankUser;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Scanner;
+import org.apache.log4j.Logger;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import static org.junit.Assert.*;
 import utlities.ConnectionFactory;
 
 public class ConsoleUITest {
@@ -96,6 +94,11 @@ public class ConsoleUITest {
     sin = new Scanner("1 -1");
     BankAccount accountReceived = ui.registerForAccount(testUser, sin);
     assertEquals((Double) 0.0D, (Double) accountReceived.getBalance());
+  }
+
+  @Test
+  public void testPeruseAccounts() {
+    assertEquals((Integer) 4, ui.peruseAccounts(testUser, new Scanner("3"));
   }
 
   @After
