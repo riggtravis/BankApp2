@@ -6,6 +6,7 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 
 import daos.BankUserDAO;
+import dataobjects.BankAccount;
 import dataobjects.BankUser;
 
 public class ConsoleUI {
@@ -64,7 +65,7 @@ public class ConsoleUI {
     System.out.println("3. Money Market Account");
     System.out.println("4. Certificate of Deposit");
     System.out.println("5. Investment Retirement Account");
-    System.out.println("6. Brokerage")
+    System.out.println("6. Brokerage");
     returnAccount.setAccounttype(sin.nextInt());
 
     System.out.println("Please enter an initial deposit");
