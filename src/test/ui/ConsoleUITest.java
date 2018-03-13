@@ -18,9 +18,6 @@ import utlities.ConnectionFactory;
 public class ConsoleUITest {
   final static Logger logger = Logger.getLogger(ConsoleUITest.class);
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
   @Test
   public void testRegister() {
     ConsoleUI ui = new ConsoleUI();
@@ -55,9 +52,13 @@ public class ConsoleUITest {
 
     Scanner sin = new Scanner("usr psw");
     BankUser returnedUser = ui.login(sin);
-    assertEquals(
-        dao.readBankUserByUserName("usr").getBankUserID(),
-        returnedUser.getBankUserID());
+    try {
+      assertEquals(
+          dao.readBankUserByUserName("usr").getBankUserID(),
+          returnedUser.getBankUserID());
+    } catch (SQLException e) {
+      fail("Something went wrong with your SQL there, bud");
+    }
   }
 
   @Test
