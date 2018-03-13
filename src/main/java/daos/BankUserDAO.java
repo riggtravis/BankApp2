@@ -18,7 +18,7 @@ public class BankUserDAO {
 
   /**
    * Create
-   * @throws SQLException 
+   * @throws SQLException
    */
   public int createBankUser(BankUser user) throws SQLException {
     sql = "INSERT INTO BANK_USER"
@@ -40,7 +40,7 @@ public class BankUserDAO {
    */
   public BankUser readBankUser(int userID) throws SQLException {
     BankUser returnUser = new BankUser();
-    
+
     conn = ConnectionFactory.getInstance().getConnection();
     sql = "SELECT * FROM BANK_USER WHERE BANK_USERID = ?";
     ps = conn.prepareStatement(sql);
@@ -49,27 +49,28 @@ public class BankUserDAO {
     populateBankUser(rs, returnUser);
     return returnUser;
   }
-  
+
   /**
    * Read by username
    */
   public BankUser readBankUserByUserName(String userName) throws SQLException {
     BankUser returnUser = new BankUser();
-    
+
     conn = ConnectionFactory.getInstance().getConnection();
     sql = "SELECT * FROM BANK_USER WHERE USERNAME = ?";
     ps = conn.prepareStatement(sql);
     ps.setString(1, userName);
     ResultSet rs = ps.executeQuery();
-    
+
     // Set up the user from the ResultSet
     populateBankUser(rs, returnUser);
     logger.info("Read by username just fine");
     return returnUser;
   }
-  
+
   // Set up a user from a result set
-  private BankUser populateBankUser(ResultSet rs, BankUser popUser) throws SQLException {
+  private BankUser populateBankUser(ResultSet rs, BankUser popUser)
+      throws SQLException {
     if (rs.next()) {
       logger.info("Got a user");
       popUser.setBankUserID(rs.getInt("bank_userID"));
