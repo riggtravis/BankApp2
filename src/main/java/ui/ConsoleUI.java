@@ -2,6 +2,7 @@ package ui;
 
 import java.sql.SQLException;
 import java.util.Scanner;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
@@ -98,11 +99,11 @@ public class ConsoleUI {
     for (int i = 0; i < perusalVector.size(); i++) {
       System.out.println(
           i + ". " + "Account "
-          + perusalVector.elelementAt(i).getBankAccountid() + ": $"
-          + perusalVector.elelementAt(i).getBalance());
+          + perusalVector.elementAt(i).getBankAccountid() + ": $"
+          + perusalVector.elementAt(i).getBalance());
     }
 
-    return perusalVector.elelementAt(sin.nextInt());
+    return perusalVector.elementAt(sin.nextInt());
   }
 
 }
