@@ -18,6 +18,13 @@ import utlities.ConnectionFactory;
 public class ConsoleUITest {
   final static Logger logger = Logger.getLogger(ConsoleUITest.class);
   final static ConsoleUI ui = new ConsoleUI();
+  private BankUser testUser;
+  private Scanner sin;
+
+  @Before
+  public void setUp() {
+    testUser = new BankUser(1, "usr", "psw", 1);
+  }
 
   @Test
   public void testRegister() {
@@ -69,16 +76,23 @@ public class ConsoleUITest {
 
   @Test
   public void testApply() {
-    BankUser testUser = new BankUser(1, "usr", "psw", 1);
-    Scanner sin = new Scanner("1 0");
+    sin = new Scanner("1 0");
     BankAccount accountReceived = ui.registerForAccount(testUser, sin);
-    BankAccount expectedAccount = new BankAccount(1, 0.0, 0, 1);
+    BankAccount expectedAccount = new BankAccount(1, 0.0D, 0, 1);
     assertEquals(
         (Double) expectedAccount.getBalance(),
         (Double) accountReceived.getBalance());
     assertEquals(
         (Double) expectedAccount.getBalance(),
         (Double) new AccountDAO checkDAO.readBankAccount(1).getBalance());
+  }
+
+  // We need to make sure that bad accounts aren't successfully created
+  @Test
+  public void testBadApply() {
+    sin = new Scanner("1 -1");
+    BankAccount accountReceived = ui.registerForAccount(testUser, sin);
+    assertEquals((Double) 0.0D, accountReceived.getBalance());
   }
 
   @After
