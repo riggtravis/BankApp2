@@ -10,7 +10,8 @@ import dataobjects.BankUser;
 
 public class ConsoleUI {
   private static final Logger logger = Logger.getLogger(ConsoleUI.class);
-  
+  private final BankUserDAO uDAO = new BankUserDAO();
+
   // Create a login
   public BankUser register(Scanner sin) {
     // Use a scanner to get the preferred username
@@ -20,18 +21,30 @@ public class ConsoleUI {
     System.out.println("That certainly is a username!");
     System.out.println("You also need a password. Enter one:");
     returnUser.setPassword(sin.next());
-    
+
     // Try to insert the return user into the database
-    BankUserDAO uDAO = new BankUserDAO();
     try {
       uDAO.createBankUser(returnUser);
-      
+
       // Search the database by username
       return uDAO.readBankUserByUserName(returnUser.getUsername());
     } catch (SQLException e) {
       logger.error("SQL exception when registering");
       return returnUser;
     }
+  }
+
+  // Let an existing user login.
+  public BankUser login(Scanner sin) {
+    BankUser returnUser = new BankUser();
+    System.out.println("What is your username? Enter now:");
+    returnUser.setUsername(sin.next());
+    returnUser = uDAO.readBankUserByUserName(returnUser.getUsername());
+    System.out.println("Okay... But what's your password?");
+    if (returnUser.getPassword().equals(sin.next())) {
+      return returnUser;
+    }
+    return new BankUser();
   }
 
 }
