@@ -88,4 +88,9 @@ public class ConsoleUI {
     }
   }
   
+  // Let the user peruse all their accounts
+  public BankAccount peruseAccounts() {
+    
+  }
+  
 }
