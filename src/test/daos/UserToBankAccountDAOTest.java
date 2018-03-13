@@ -18,7 +18,8 @@ import utlities.ConnectionFactory;
 
 public class UserToBankAccountDAOTest {
   final static Logger logger = Logger.getLogger(UserToBankAccountDAOTest.class);
-  final static Connection conn = ConnectionFactory.getInstance().getConnection();
+  final static Connection conn =
+      ConnectionFactory.getInstance().getConnection();
 
   @Test
   public void testCreateUserToBankAccountRelationship() {
@@ -34,8 +35,8 @@ public class UserToBankAccountDAOTest {
       testDAO.createUserToBankAccountRelationship(
           testUser, new BankAccount(0, 112.0D, 0, 1));
       logger.info("Inserted data!");
-      /* Make sure that the newest bank account and the bank account that was just
-       * inserted share the same VALUES
+      /* Make sure that the newest bank account and the bank account that was
+       * just inserted share the same VALUES
        */
       // Get the largest bankAccountid we can find
       CallableStatement numberGetter = conn.prepareCall(
@@ -53,7 +54,7 @@ public class UserToBankAccountDAOTest {
       fail("SQL errors abound!");
     }
   }
-  
+
   @After
   public void tearDown() {
     try {
