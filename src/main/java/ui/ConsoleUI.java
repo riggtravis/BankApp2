@@ -52,4 +52,25 @@ public class ConsoleUI {
     return new BankUser();
   }
 
+  // Let a logged in user apply for an account
+  public BankAccount registerForAccount(BankUser currentUser, Scanner sin) {
+    int accountType;
+    double initialDeposit;
+    BankAccount returnAccount = new BankAccount();
+
+    System.out.println("Please enter the type of account you would like:");
+    System.out.println("1. Checking");
+    System.out.println("2. Savings");
+    System.out.println("3. Money Market Account");
+    System.out.println("4. Certificate of Deposit");
+    System.out.println("5. Investment Retirement Account");
+    System.out.println("6. Brokerage")
+    returnAccount.setAccounttype(sin.nextInt());
+
+    System.out.println("Please enter an initial deposit");
+    returnAccount.setBalance(sin.nextDouble());
+
+    // Associate the user and their new account
+  }
+
 }
