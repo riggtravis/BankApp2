@@ -88,6 +88,8 @@ public class ConsoleUITest {
       PreparedStatement ps = conn.prepareStatement(
           "DELETE FROM BANK_USER WHERE USERNAME = 'GreatUsername'");
       ps.executeQuery();
+      ps = conn.prepareStatement("DELETE FROM BANK_ACCOUNT");
+      ps.executeQuery();
     } catch (SQLException e) {
       logger.fatal(e);
     }
