@@ -69,6 +69,11 @@ public class ConsoleUITest {
     BankUser returnedUser = ui.login(sin);
     assertEquals("", returnedUser.getUsername());
   }
+  
+  @Test
+  public void testApply() {
+    BankUser testUser = new BankUser();
+  }
 
   @After
   public void tearDown() {
