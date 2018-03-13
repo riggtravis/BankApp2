@@ -40,7 +40,7 @@ public class ConsoleUITest {
     Connection conn = ConnectionFactory.getInstance().getConnection();
     try {
       PreparedStatement ps = conn.prepareStatement(
-          "DELETE FROM BANK_USER WHERE USERNAME = 'GreatUser'");
+          "DELETE FROM BANK_USER WHERE USERNAME = 'GreatUsername'");
       ps.executeQuery();
     } catch (SQLException e) {
       logger.fatal(e);
