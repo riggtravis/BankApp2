@@ -39,7 +39,12 @@ public class ConsoleUI {
     BankUser returnUser = new BankUser();
     System.out.println("What is your username? Enter now:");
     returnUser.setUsername(sin.next());
-    returnUser = uDAO.readBankUserByUserName(returnUser.getUsername());
+    try {
+      returnUser = uDAO.readBankUserByUserName(returnUser.getUsername());
+    } catch (SQLException e) {
+      logger.fatal(e);
+      System.out.println("Sorry. Something went wrong it seems");
+    }
     System.out.println("Okay... But what's your password?");
     if (returnUser.getPassword().equals(sin.next())) {
       return returnUser;
