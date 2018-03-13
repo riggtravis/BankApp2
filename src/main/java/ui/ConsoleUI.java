@@ -90,7 +90,19 @@ public class ConsoleUI {
 
   // Let the user peruse all their accounts
   public BankAccount peruseAccounts(BankUser currentUser, Scanner sin) {
-    return null;
+    UserToBankAccountDAO dao = new UserToBankAccountDAO();
+    Vector<BankAccount> perusalVector = dao.readBankUserAccounts(currentUser);
+
+    // Loop through the persual vector to show the user all of their choices
+    System.out.println("Which of your accounts would you like to access?");
+    for (int i = 0; i < perusalVector.size(); i++) {
+      System.out.println(
+          i + ". " + "Account "
+          + perusalVector.elelementAt(i).getBankAccountid() + ": $"
+          + perusalVector.elelementAt(i).getBalance());
+    }
+
+    return perusalVector.elelementAt(sin.nextInt());
   }
 
 }
