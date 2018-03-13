@@ -17,10 +17,10 @@ import utlities.ConnectionFactory;
 
 public class ConsoleUITest {
   final static Logger logger = Logger.getLogger(ConsoleUITest.class);
+  final static ConsoleUI ui = new ConsoleUI();
 
   @Test
   public void testRegister() {
-    ConsoleUI ui = new ConsoleUI();
     BankUserDAO dao = new BankUserDAO();
 
     // We need to pass register a scanner
@@ -37,7 +37,6 @@ public class ConsoleUITest {
 
   @Test
   public void badRegister() throws SQLException {
-    ConsoleUI ui = new ConsoleUI();
     BankUserDAO dao = new BankUserDAO();
 
     Scanner sin = new Scanner("usr psw");
@@ -47,7 +46,6 @@ public class ConsoleUITest {
 
   @Test
   public void testLogin() {
-    ConsoleUI ui = new ConsoleUI();
     BankUserDAO dao = new BankUserDAO();
 
     Scanner sin = new Scanner("usr psw");
@@ -63,16 +61,24 @@ public class ConsoleUITest {
 
   @Test
   public void testBadLogin() {
-    ConsoleUI ui = new ConsoleUI();
     BankUserDAO dao = new BankUserDAO();
     Scanner sin = new Scanner("usr blurble");
     BankUser returnedUser = ui.login(sin);
     assertEquals("", returnedUser.getUsername());
   }
-  
+
   @Test
   public void testApply() {
-    BankUser testUser = new BankUser();
+    BankUser testUser = new BankUser(1, "usr", "psw", 1);
+    Scanner sin = new Scanner("1 0");
+    BankAccount accountReceived = ui.registerForAccount(testUser, sin);
+    BankAccount expectedAccount = new BankAccount(1, 0.0, 0, 1);
+    assertEquals(
+        (Double) expectedAccount.getBalance(),
+        (Double) accountReceived.getBalance());
+    assertEquals(
+        (Double) expectedAccount.getBalance(),
+        (Double) new AccountDAO checkDAO.readBankAccount(1).getBalance());
   }
 
   @After
