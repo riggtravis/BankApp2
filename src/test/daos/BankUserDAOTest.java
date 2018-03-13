@@ -43,6 +43,15 @@ public class BankUserDAOTest {
       fail("SQLException");
     }
   }
+  
+  @Test
+  public void testUsernameRead() {
+    try {
+      assertEquals(1, dao.readBankUserByUserName("usr").getBankUserID());
+    } catch (SQLException e) {
+      fail("there was an SQL error when testing the username read");
+    }
+  }
 
   @Test
   public void testCreateBankUser() {

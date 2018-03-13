@@ -7,6 +7,7 @@ import java.sql.SQLException;
 
 import org.apache.log4j.Logger;
 
+import dataobjects.BadTransactionException;
 import dataobjects.BankAccount;
 import utlities.ConnectionFactory;
 
@@ -66,6 +67,8 @@ public class BankAccountDAO {
     } catch (SQLException e) {
       // This happening seems bad. I don't know what causes it.
       logger.fatal(e);
+    } catch (BadTransactionException e) {
+      logger.fatal("An illegal value was allowed to be stored to the database");
     }
     return returnAccount;
   }

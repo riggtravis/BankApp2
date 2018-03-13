@@ -6,6 +6,8 @@ import java.util.Scanner;
 import org.apache.log4j.Logger;
 
 import daos.BankUserDAO;
+import daos.UserToBankAccountDAO;
+import dataobjects.BadTransactionException;
 import dataobjects.BankAccount;
 import dataobjects.BankUser;
 
@@ -55,9 +57,8 @@ public class ConsoleUI {
 
   // Let a logged in user apply for an account
   public BankAccount registerForAccount(BankUser currentUser, Scanner sin) {
-    int accountType;
-    double initialDeposit;
     BankAccount returnAccount = new BankAccount();
+    UserToBankAccountDAO relationalDAO = new UserToBankAccountDAO();
 
     System.out.println("Please enter the type of account you would like:");
     System.out.println("1. Checking");
@@ -69,9 +70,22 @@ public class ConsoleUI {
     returnAccount.setAccounttype(sin.nextInt());
 
     System.out.println("Please enter an initial deposit");
-    returnAccount.setBalance(sin.nextDouble());
+    try {
+      returnAccount.setBalance(sin.nextDouble());
+    } catch (BadTransactionException e) {
+      System.out.println(
+            "Why are you trying to make a negative initial deposit?");
+      return new BankAccount();
+    }
 
     // Associate the user and their new account
+    try {
+      return relationalDAO.createUserToBankAccountRelationship(
+          currentUser, returnAccount);
+    } catch (SQLException e) {
+      System.out.println("Something was done that shouldn't have been.");
+      return new BankAccount();
+    }
   }
 
 }

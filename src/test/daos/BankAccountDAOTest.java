@@ -8,7 +8,6 @@ import java.sql.SQLException;
 import java.sql.Savepoint;
 
 import org.apache.log4j.Logger;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -17,7 +16,6 @@ import utlities.ConnectionFactory;
 
 public class BankAccountDAOTest {
   private Connection conn;
-  private Savepoint s;
   private BankAccount testAccount;
   final static Logger logger = Logger.getLogger(BankAccountDAOTest.class);
   private BankAccountDAO dao;
