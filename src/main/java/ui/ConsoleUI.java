@@ -87,10 +87,10 @@ public class ConsoleUI {
       return new BankAccount();
     }
   }
-  
+
   // Let the user peruse all their accounts
-  public BankAccount peruseAccounts() {
-    
+  public BankAccount peruseAccounts(BankUser currentUser, Scanner sin) {
+
   }
-  
+
 }
