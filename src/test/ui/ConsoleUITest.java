@@ -9,9 +9,12 @@ import java.util.Scanner;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import daos.BankAccountDAO;
 import daos.BankUserDAO;
+import dataobjects.BankAccount;
 import dataobjects.BankUser;
 import utlities.ConnectionFactory;
 
@@ -84,7 +87,7 @@ public class ConsoleUITest {
         (Double) accountReceived.getBalance());
     assertEquals(
         (Double) expectedAccount.getBalance(),
-        (Double) new AccountDAO checkDAO.readBankAccount(1).getBalance());
+        (Double) new BankAccountDAO().readBankAccount(1).getBalance());
   }
 
   // We need to make sure that bad accounts aren't successfully created
@@ -92,7 +95,7 @@ public class ConsoleUITest {
   public void testBadApply() {
     sin = new Scanner("1 -1");
     BankAccount accountReceived = ui.registerForAccount(testUser, sin);
-    assertEquals((Double) 0.0D, accountReceived.getBalance());
+    assertEquals((Double) 0.0D, (Double) accountReceived.getBalance());
   }
 
   @After
