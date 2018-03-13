@@ -30,7 +30,7 @@ public class ConsoleUI {
       return uDAO.readBankUserByUserName(returnUser.getUsername());
     } catch (SQLException e) {
       logger.error("SQL exception when registering");
-      return returnUser;
+      return new BankUser();
     }
   }
 
