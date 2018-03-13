@@ -57,13 +57,14 @@ public class BankUserDAO {
     BankUser returnUser = new BankUser();
 
     conn = ConnectionFactory.getInstance().getConnection();
-    sql = "SELECT * FROM BANK_USER WHERE BANK_USERID = ?";
+    sql = "SELECT * FROM BANK_USER WHERE USERNAME = ?";
     ps = conn.prepareStatement(sql);
     ps.setString(1, userName);
     ResultSet rs = ps.executeQuery();
 
     // Set up the user from the ResultSet
     populateBankUser(rs, returnUser);
+    logger.info("Read by username just fine");
     return returnUser;
   }
 

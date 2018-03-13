@@ -2,15 +2,22 @@ package ui;
 
 import static org.junit.Assert.*;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import org.apache.log4j.Logger;
+import org.junit.After;
 import org.junit.Test;
 
 import daos.BankUserDAO;
 import dataobjects.BankUser;
+import utlities.ConnectionFactory;
 
 public class ConsoleUITest {
+  final static Logger logger = Logger.getLogger(ConsoleUITest.class);
+
 	@Rule
 	public ExpectedException thrown = ExpectedException.none();
 
@@ -31,6 +38,18 @@ public class ConsoleUITest {
     }
   }
 
+  @After
+  public void tearDown() {
+    Connection conn = ConnectionFactory.getInstance().getConnection();
+    try {
+      PreparedStatement ps = conn.prepareStatement(
+          "DELETE FROM BANK_USER WHERE USERNAME = 'GreatUser'");
+      ps.executeQuery();
+    } catch (SQLException e) {
+      logger.fatal(e);
+    }
+  }
+
   @Test(expected = SQLException.class)
   public void badRegister() throws SQLException {
     ConsoleUI ui = new ConsoleUI();
@@ -41,6 +60,6 @@ public class ConsoleUITest {
     thrown.expect(SQLException.class);
   }
 
-  
+
 
 }
