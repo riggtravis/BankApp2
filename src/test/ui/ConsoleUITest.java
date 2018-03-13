@@ -38,16 +38,17 @@ public class ConsoleUITest {
     }
   }
 
-  @Test(expected = SQLException.class)
+  @Test
   public void badRegister() throws SQLException {
     ConsoleUI ui = new ConsoleUI();
     BankUserDAO dao = new BankUserDAO();
 
     Scanner sin = new Scanner("usr psw");
-    ui.register(sin);
-    thrown.expect(SQLException.class);
+    BankUser returnedUser = ui.register(sin);
+    assertEquals("", returnedUser.getUsername());
   }
 
+  @Test
   public void testLogin() {
     ConsoleUI ui = new ConsoleUI();
     BankUserDAO dao = new BankUserDAO();
@@ -57,6 +58,15 @@ public class ConsoleUITest {
     assertEquals(
         dao.readBankUserByUserName("usr").getBankUserID(),
         returnedUser.getBankUserID());
+  }
+
+  @Test
+  public void testBadLogin() {
+    ConsoleUI ui = new ConsoleUI();
+    BankUserDAO dao = new BankUserDAO();
+    Scanner sin = new Scanner("usr blurble");
+    BankUser returnedUser = ui.login(sin);
+    assertEquals("", returnedUser.getUsername());
   }
 
   @After
