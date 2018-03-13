@@ -20,10 +20,10 @@ public class UserToBankAccountDAOTest {
   final static Logger logger = Logger.getLogger(UserToBankAccountDAOTest.class);
   final static Connection conn =
       ConnectionFactory.getInstance().getConnection();
+  UserToBankAccountDAO testDAO = new UserToBankAccountDAO();
 
   @Test
   public void testCreateUserToBankAccountRelationship() {
-    UserToBankAccountDAO testDAO = new UserToBankAccountDAO();
     BankUserDAO userDAO = new BankUserDAO();
     BankAccountDAO accountDAO = new BankAccountDAO();
 
@@ -53,6 +53,12 @@ public class UserToBankAccountDAOTest {
     } catch (SQLException e) {
       fail("SQL errors abound!");
     }
+  }
+
+  public void testReadBankUserAccounts() {
+    Vector<BankAccount> fetchedVector =
+        testDAO.readBankUserAccounts(new BankUser(1, "usr", "psw", 1));
+    assertEquals((Integer) 3, fetchedVector.size());
   }
 
   @After

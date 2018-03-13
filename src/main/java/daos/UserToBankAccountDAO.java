@@ -14,14 +14,16 @@ import utlities.ConnectionFactory;
 
 public class UserToBankAccountDAO {
   final static Logger logger = Logger.getLogger(UserToBankAccountDAO.class);
+  private String sql;
+  private Connection conn;
+  PreparedStatement ps;
 
   public BankAccount createUserToBankAccountRelationship (
         BankUser owner, BankAccount account) throws SQLException {
-    Connection conn = ConnectionFactory.getInstance().getConnection();
-    PreparedStatement ps;
+    conn = ConnectionFactory.getInstance().getConnection();
     BankAccountDAO accountDAO = new BankAccountDAO();
-    String sql =
-      "INSERT INTO USER_TO_BANK_ACCOUNT (BANK_USERID, BANK_ACCOUNTID) VALUES (?, ?)";
+    sql = "INSERT INTO USER_TO_BANK_ACCOUNT"
+        + " (BANK_USERID, BANK_ACCOUNTID) VALUES (?, ?)";
     int finalID;
     ps = conn.prepareStatement(sql);
     logger.info("Prepared statement okay");
@@ -49,9 +51,30 @@ public class UserToBankAccountDAO {
     logger.info("Succeeded in setting up the query for the account");
     ps.executeUpdate();
     logger.info("Succeeded in updating the table");
-    
+
     // Now return the bank account that was created
     return accountDAO.readBankAccount(finalID);
+  }
+
+  public Vector<BankAccount> readBankUserAccounts(BankUser requestUser) {
+    Vector<BankAccount> returnVector = new Vector<BankAccount>();
+
+    // Get all of the accounts from the account table that belong to requestUser
+    sql = "SELECT A.* FROM USER_TO_BANK_ACCOUNT U JOIN ON BANK_ACCOUNT A"
+        + " WHERE U.BANK_USERID = ? AND A.BANK_ACCOUNTID = U.BANK_ACCOUNTID";
+    ps = conn.prepareStatement(sql);
+    ps.setInt(1, requestUser.getBankUserID());
+    ResultSet rs = ps.executexecuteQuery();
+    while (rs.next()) {
+      BankAccount listedAccount = new BankAccount();
+      listedAccount.setAccounttype(rs.getInt("accountType"));
+      listedAccount.setBalance(rs.getDouble("balance"));
+      listedAccount.setBankAccountid(rs.getInt("bank_accountID"));
+      listedAccount.setStatus(rs.getInt("status"));
+      returnVector.add(listedAccount);
+    }
+
+    return returnVector;
   }
 
 }
