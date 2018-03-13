@@ -23,7 +23,7 @@ public class ConsoleUITest {
 
   @Before
   public void setUp() {
-    testUser = new BankUser(1, "usr", "psw", 1);
+    testUser = new BankUser(3, "newUsername", "newPassword", 0);
   }
 
   @Test
@@ -74,17 +74,23 @@ public class ConsoleUITest {
     assertEquals("", returnedUser.getUsername());
   }
 
+  // This test requires a clean database. I need to figure out how better to provide that
   @Test
   public void testApply() {
     sin = new Scanner("1 0");
     BankAccount accountReceived = ui.registerForAccount(testUser, sin);
-    BankAccount expectedAccount = new BankAccount(1, 0.0D, 0, 1);
+    logger.info("Got account " + accountReceived.getBankAccountid());
+    BankAccount expectedAccount = new BankAccount(5, 0.0D, 0, 1);
     assertEquals(
         (Double) expectedAccount.getBalance(),
         (Double) accountReceived.getBalance());
     assertEquals(
         (Double) expectedAccount.getBalance(),
-        (Double) new BankAccountDAO().readBankAccount(1).getBalance());
+        (Double) new BankAccountDAO().readBankAccount(5).getBalance());
+    
+    // We need to delete the account we created
+    BankAccountDAO dao = new BankAccountDAO();
+    dao.deleteAccount(accountReceived.getBankAccountid());
   }
 
   // We need to make sure that bad accounts aren't successfully created
@@ -94,11 +100,12 @@ public class ConsoleUITest {
     BankAccount accountReceived = ui.registerForAccount(testUser, sin);
     assertEquals((Double) 0.0D, (Double) accountReceived.getBalance());
   }
-
+  
   @Test
   public void testPeruseAccounts() {
-    assertEquals((Integer) 4, ui.peruseAccounts(testUser, new Scanner("3"));
+    assertEquals((Integer) 8, (Integer) ui.peruseAccounts(testUser, new Scanner("2")).getBankAccountid());
   }
+
 
   @After
   public void tearDown() {
@@ -106,8 +113,6 @@ public class ConsoleUITest {
     try {
       PreparedStatement ps = conn.prepareStatement(
           "DELETE FROM BANK_USER WHERE USERNAME = 'GreatUsername'");
-      ps.executeQuery();
-      ps = conn.prepareStatement("DELETE FROM BANK_ACCOUNT");
       ps.executeQuery();
     } catch (SQLException e) {
       logger.fatal(e);
