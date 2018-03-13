@@ -38,6 +38,27 @@ public class ConsoleUITest {
     }
   }
 
+  @Test(expected = SQLException.class)
+  public void badRegister() throws SQLException {
+    ConsoleUI ui = new ConsoleUI();
+    BankUserDAO dao = new BankUserDAO();
+
+    Scanner sin = new Scanner("usr psw");
+    ui.register(sin);
+    thrown.expect(SQLException.class);
+  }
+
+  public void testLogin() {
+    ConsoleUI ui = new ConsoleUI();
+    BankUserDAO dao = new BankUserDAO();
+
+    Scanner sin = new Scanner("usr psw");
+    BankUser returnedUser = ui.login(sin);
+    assertEquals(
+        dao.readBankUserByUserName("usr").getBankUserID(),
+        returnedUser.getBankUserID());
+  }
+
   @After
   public void tearDown() {
     Connection conn = ConnectionFactory.getInstance().getConnection();
@@ -49,17 +70,5 @@ public class ConsoleUITest {
       logger.fatal(e);
     }
   }
-
-  @Test(expected = SQLException.class)
-  public void badRegister() throws SQLException {
-    ConsoleUI ui = new ConsoleUI();
-    BankUserDAO dao = new BankUserDAO();
-
-    Scanner sin = new Scanner("usr psw");
-    ui.register(sin);
-    thrown.expect(SQLException.class);
-  }
-
-
 
 }
