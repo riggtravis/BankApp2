@@ -3,11 +3,14 @@ package daos;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 
+import dataobjects.BadTransactionException;
 import dataobjects.BankAccount;
 import dataobjects.BankUser;
 import utlities.ConnectionFactory;
@@ -58,20 +61,29 @@ public class UserToBankAccountDAO {
 
   public Vector<BankAccount> readBankUserAccounts(BankUser requestUser) {
     Vector<BankAccount> returnVector = new Vector<BankAccount>();
+    ResultSet rs;
+    conn = ConnectionFactory.getInstance().getConnection();
 
     // Get all of the accounts from the account table that belong to requestUser
-    sql = "SELECT A.* FROM USER_TO_BANK_ACCOUNT U JOIN ON BANK_ACCOUNT A"
-        + " WHERE U.BANK_USERID = ? AND A.BANK_ACCOUNTID = U.BANK_ACCOUNTID";
-    ps = conn.prepareStatement(sql);
-    ps.setInt(1, requestUser.getBankUserID());
-    ResultSet rs = ps.executexecuteQuery();
-    while (rs.next()) {
-      BankAccount listedAccount = new BankAccount();
-      listedAccount.setAccounttype(rs.getInt("accountType"));
-      listedAccount.setBalance(rs.getDouble("balance"));
-      listedAccount.setBankAccountid(rs.getInt("bank_accountID"));
-      listedAccount.setStatus(rs.getInt("status"));
-      returnVector.add(listedAccount);
+    sql = "SELECT AC.*"
+        + " FROM USER_TO_BANK_ACCOUNT U JOIN BANK_ACCOUNT AC"
+        + " ON AC.BANK_ACCOUNTID = U.BANK_ACCOUNTID WHERE U.BANK_USERID = ?";
+    try {
+      ps = conn.prepareStatement(sql);
+      ps.setInt(1, requestUser.getBankUserID());
+      rs = ps.executeQuery();
+      while (rs.next()) {
+        BankAccount listedAccount = new BankAccount();
+        listedAccount.setAccounttype(rs.getInt("accountType"));
+        listedAccount.setBalance(rs.getDouble("balance"));
+        listedAccount.setBankAccountid(rs.getInt("bank_accountID"));
+        listedAccount.setStatus(rs.getInt("status"));
+        returnVector.add(listedAccount);
+      }
+    } catch (SQLException e) {
+      logger.error(e);
+    } catch (BadTransactionException e) {
+      logger.error("Bad data was allowed in the database");
     }
 
     return returnVector;
