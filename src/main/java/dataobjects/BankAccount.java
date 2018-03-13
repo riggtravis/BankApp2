@@ -30,7 +30,10 @@ public class BankAccount {
 		return balance;
 	}
 
-	public void setBalance(double balance) {
+	public void setBalance(double balance) throws BadTransactionException {
+	  if (balance < 0.0D) {
+	    throw new BadTransactionException();
+	  }
 		this.balance = balance;
 	}
 

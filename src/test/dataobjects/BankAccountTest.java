@@ -36,8 +36,18 @@ public class BankAccountTest {
 
 	@Test
 	public void testSetBalance() {
-		testAccount.setBalance(0.1D);
+		try {
+      testAccount.setBalance(0.1D);
+    } catch (BadTransactionException e) {
+      fail("Your setter is treating " + 0.1D + " as a negative number");
+    }
 		assertEquals((Double) 0.1D, (Double) testAccount.getBalance());
+	}
+	
+	@Test(expected = BadTransactionException.class)
+	public void testBadSet() throws BadTransactionException {
+	  testAccount.setBalance(-0.1D);
+	  thrown.expect(BadTransactionException.class);
 	}
 
 	@Test
