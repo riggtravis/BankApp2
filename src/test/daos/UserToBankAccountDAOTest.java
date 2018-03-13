@@ -7,6 +7,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Vector;
 
 import org.apache.log4j.Logger;
 import org.junit.After;
@@ -55,10 +56,11 @@ public class UserToBankAccountDAOTest {
     }
   }
 
+  @Test
   public void testReadBankUserAccounts() {
     Vector<BankAccount> fetchedVector =
         testDAO.readBankUserAccounts(new BankUser(1, "usr", "psw", 1));
-    assertEquals((Integer) 3, fetchedVector.size());
+    assertEquals((Integer) 3, (Integer) fetchedVector.size());
   }
 
   @After
